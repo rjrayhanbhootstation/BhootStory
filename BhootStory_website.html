@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BhootStory - Horror Audio</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f5f5f5;color:#222}
+.header{background:linear-gradient(135deg,#079bd3,#0877b8);padding:18px 12px 22px;text-align:center}
+.logo{font-size:42px;font-weight:900;font-style:italic;color:white;text-shadow:3px 4px 0 #153d58,5px 6px 8px #333;margin:0 0 18px}
+.nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.nav a{color:white;text-decoration:none;border:2px solid white;padding:12px 22px;font-weight:bold;font-size:17px;min-width:150px}
+.search{padding:15px 12px;background:white}
+.search input{width:100%;padding:13px;border:1px solid #bbb;border-radius:4px;font-size:16px}
+.section-title{background:linear-gradient(#12b6e8,#079bd3);color:white;text-align:center;font-size:25px;font-weight:bold;padding:10px;margin:0 0 8px}
+.notice{text-align:center;background:white;padding:10px;color:#777}
+.episode{display:flex;gap:20px;align-items:center;background:white;padding:18px 15px;border-bottom:1px solid #ddd}
+.thumb{width:115px;height:115px;object-fit:cover;border-radius:10px;flex-shrink:0;background:#111}
+.info{flex:1}
+.info h2{font-size:21px;line-height:1.25;color:#a20e14;margin:0 0 8px}
+.meta{color:#555;margin-bottom:12px}
+.buttons{display:flex;gap:8px;flex-wrap:wrap}
+button,.download{border:0;border-radius:4px;padding:9px 15px;background:#079bd3;color:white;font-weight:bold;text-decoration:none;cursor:pointer}
+.download{background:#168b3b}
+audio{width:100%;margin-top:10px}
+.footer{margin-top:25px;background:#222;color:white;text-align:center;padding:22px}
+@media(max-width:600px){
+.logo{font-size:34px}
+.nav a{min-width:0;flex:1;padding:11px 7px;font-size:14px}
+.episode{align-items:flex-start;gap:14px}
+.thumb{width:92px;height:92px}
+.info h2{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1 class="logo">BhootStory</h1>
+  <nav class="nav">
+    <a href="#episodes">🎧 Horror Stories</a>
+    <a href="#about">ℹ️ About</a>
+    <a href="#contact">📩 Contact</a>
+  </nav>
+</header>
+
+<div class="search">
+  <input id="search" type="search" placeholder="🔎 Episode / Story খুঁজুন..." oninput="searchEpisodes()">
+</div>
+
+<section id="episodes">
+  <div class="section-title">Latest Updates</div>
+  <div class="notice">নতুন নতুন ভৌতিক গল্প ও Episode এখানে সবার আগে পাবেন।</div>
+  <div id="episodeList"></div>
+</section>
+
+<section id="about">
+  <div class="section-title">About BhootStory</div>
+  <div class="notice">
+    BhootStory-তে বিভিন্ন রহস্যময় ও ভৌতিক ঘটনা, Horror Story এবং Paranormal গল্প প্রকাশ করা হয়।
+    <br>সব কনটেন্ট বিনোদনের উদ্দেশ্যে পরিবেশিত।
+  </div>
+</section>
+
+<footer class="footer" id="contact">
+  <b>BhootStory</b><br>
+  Horror Story & Audio Platform<br><br>
+  © 2026 BhootStory. All Rights Reserved.
+</footer>
+
+<script>
+const episodes = [
+  {
+    title:"গোরস্থানের ভূত - Episode 01",
+    episode:"Episode 01",
+    date:"09 August 2026",
+    size:"7.18 MB",
+    image:"https://via.placeholder.com/300x300/111/fff?text=BhootStory",
+    audio:"audio/episode-01.mp3"
+  },
+  {
+    title:"রাত ৩টার সেই ভয়ংকর ঘটনা - Episode 02",
+    episode:"Episode 02",
+    date:"09 August 2026",
+    size:"8.42 MB",
+    image:"https://via.placeholder.com/300x300/111/fff?text=BhootStory",
+    audio:"audio/episode-02.mp3"
+  },
+  {
+    title:"পুরনো বাড়ির অদৃশ্য অতিথি - Episode 03",
+    episode:"Episode 03",
+    date:"10 August 2026",
+    size:"12.50 MB",
+    image:"https://via.placeholder.com/300x300/111/fff?text=BhootStory",
+    audio:"audio/episode-03.mp3"
+  }
+];
+
+function render(list=episodes){
+  const box=document.getElementById("episodeList");
+  box.innerHTML="";
+  if(!list.length){
+    box.innerHTML='<div class="notice">কোনো Episode পাওয়া যায়নি।</div>';
+    return;
+  }
+  list.forEach((e,i)=>{
+    box.innerHTML += `
+      <article class="episode">
+        <img class="thumb" src="${e.image}" alt="BhootStory">
+        <div class="info">
+          <h2>${e.title}</h2>
+          <div class="meta">${e.episode} • ${e.date} • [${e.size}]</div>
+          <div class="buttons">
+            <button onclick="playAudio(${i})">▶ Play</button>
+            <a class="download" href="${e.audio}" download>⬇ Download</a>
+          </div>
+          <audio id="audio-${i}" controls preload="none"></audio>
+        </div>
+      </article>`;
+  });
+}
+
+function playAudio(i){
+  const audio=document.getElementById("audio-"+i);
+  audio.src=episodes[i].audio;
+  audio.play();
+}
+
+function searchEpisodes(){
+  const q=document.getElementById("search").value.toLowerCase();
+  render(episodes.filter(e=>
+    e.title.toLowerCase().includes(q) ||
+    e.episode.toLowerCase().includes(q) ||
+    e.date.toLowerCase().includes(q)
+  ));
+}
+
+render();
+</script>
+</body>
+</html>
